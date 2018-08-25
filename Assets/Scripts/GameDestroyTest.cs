@@ -15,6 +15,9 @@ public class GameDestroyTest : MonoBehaviour
         Debug.Log("the test gomeobject instanceID is " + TestGO.GetInstanceID());
         GetTestInstanceID = TestGO.GetInstanceID;
         Destroy(TestGO);
+
+        //强制GC
+        System.GC.Collect();
     }
 
     // Update is called once per frame
