@@ -16,11 +16,12 @@ namespace CZM
     public class MessageCenter
     {
         static Dictionary<int, Dictionary<string, MessageDelegate>> TargtsEventsAndHandlers =
-        new Dictionary<int, Dictionary<string, MessageDelegate>>();
+                new Dictionary<int, Dictionary<string, MessageDelegate>>();
         static Dictionary<string, MessageDelegate> MonitorAllEvents =
-               new Dictionary<string, MessageDelegate>();
+                new Dictionary<string, MessageDelegate>();
         static Dictionary<string, MessageDelegate> UnownedEventsAndHandlers =
-        new Dictionary<string, MessageDelegate>();
+                new Dictionary<string, MessageDelegate>();
+
         static void Monitor(GameObject target, string eventName, MessageDelegate handler)
         {
             if (target == null)
@@ -37,6 +38,7 @@ namespace CZM
             else
                 eventAndHandlers[eventName] += handler;
         }
+
         static void StopMonitor(GameObject target, string eventName, MessageDelegate handler)
         {
             if (target == null)
@@ -62,6 +64,7 @@ namespace CZM
                 TargtsEventsAndHandlers.Remove(id);
 
         }
+
         static void MonitorAll(string eventName, MessageDelegate handler)
         {
             if (!MonitorAllEvents.ContainsKey(eventName))
@@ -69,6 +72,7 @@ namespace CZM
             else
                 MonitorAllEvents[eventName] += handler;
         }
+
         static void StopMonitorAll(string eventName, MessageDelegate handler)
         {
             if (!MonitorAllEvents.ContainsKey(eventName))
@@ -80,6 +84,7 @@ namespace CZM
                     MonitorAllEvents.Remove(eventName);
             }
         }
+
         static void MonitorUnownedEvent(string eventName, MessageDelegate handler)
         {
             if (!UnownedEventsAndHandlers.ContainsKey(eventName))
@@ -87,6 +92,7 @@ namespace CZM
             else
                 UnownedEventsAndHandlers[eventName] += handler;
         }
+
         static void StopMonitorUnownedEvent(string eventName, MessageDelegate handler)
         {
             if (!UnownedEventsAndHandlers.ContainsKey(eventName))
@@ -107,6 +113,7 @@ namespace CZM
 
             TriggerEvent(target.GetInstanceID(), eventName, data);
         }
+
         static void TriggerEvent(int instanceID, string eventName, object data)
         {
             if (!TargtsEventsAndHandlers.ContainsKey(instanceID))
@@ -125,11 +132,7 @@ namespace CZM
                 MonitorAllEvents[eventName]((Message)data);
 
         }
-        static void TriggerAll(string eventName, object data)
-        {
-            foreach (var item in TargtsEventsAndHandlers.Keys)
-                TriggerEvent(item, eventName, data);
-        }
+        
         static void TriggerUnownedEvent(string eventName, object data)
         {
             if (!UnownedEventsAndHandlers.ContainsKey(eventName))
