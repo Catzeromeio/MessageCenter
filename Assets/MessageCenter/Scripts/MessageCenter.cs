@@ -15,10 +15,10 @@ namespace CZM
         static Dictionary<string, MessageDelegate> UnownedEventsAndHandlers =
                 new Dictionary<string, MessageDelegate>();
 
-        static void Monitor(GameObject target, string eventName, MessageDelegate handler)
+        public static bool Monitor(GameObject target, string eventName, MessageDelegate handler)
         {
             if (target == null)
-                return;
+                return false;
 
             int id = target.GetInstanceID();
             if (!TargtsEventsAndHandlers.ContainsKey(id))
@@ -30,9 +30,11 @@ namespace CZM
                 eventAndHandlers.Add(eventName, new MessageDelegate(handler));
             else
                 eventAndHandlers[eventName] += handler;
+
+            return true;
         }
 
-        static void StopMonitor(GameObject target, string eventName, MessageDelegate handler)
+        public static void StopMonitor(GameObject target, string eventName, MessageDelegate handler)
         {
             if (target == null)
                 return;
@@ -58,7 +60,7 @@ namespace CZM
 
         }
 
-        static void MonitorAll(string eventName, MessageDelegate handler)
+        public static void MonitorAll(string eventName, MessageDelegate handler)
         {
             if (!MonitorAllEvents.ContainsKey(eventName))
                 MonitorAllEvents.Add(eventName, new MessageDelegate(handler));
@@ -66,7 +68,7 @@ namespace CZM
                 MonitorAllEvents[eventName] += handler;
         }
 
-        static void StopMonitorAll(string eventName, MessageDelegate handler)
+        public static void StopMonitorAll(string eventName, MessageDelegate handler)
         {
             if (!MonitorAllEvents.ContainsKey(eventName))
                 return;
@@ -78,7 +80,7 @@ namespace CZM
             }
         }
 
-        static void MonitorUnownedEvent(string eventName, MessageDelegate handler)
+        public static void MonitorUnownedEvent(string eventName, MessageDelegate handler)
         {
             if (!UnownedEventsAndHandlers.ContainsKey(eventName))
                 UnownedEventsAndHandlers.Add(eventName, new MessageDelegate(handler));
@@ -86,7 +88,7 @@ namespace CZM
                 UnownedEventsAndHandlers[eventName] += handler;
         }
 
-        static void StopMonitorUnownedEvent(string eventName, MessageDelegate handler)
+        public static void StopMonitorUnownedEvent(string eventName, MessageDelegate handler)
         {
             if (!UnownedEventsAndHandlers.ContainsKey(eventName))
                 return;
@@ -99,7 +101,7 @@ namespace CZM
         }
 
         //immedate, next frame, some seconds
-        static void TriggerEvent(GameObject target, string eventName, object data)
+        public static void TriggerEvent(GameObject target, string eventName, object data)
         {
             if (target == null)
                 return;
@@ -125,8 +127,8 @@ namespace CZM
                 MonitorAllEvents[eventName](data);
 
         }
-        
-        static void TriggerUnownedEvent(string eventName, object data)
+
+        public static void TriggerUnownedEvent(string eventName, object data)
         {
             if (!UnownedEventsAndHandlers.ContainsKey(eventName))
                 return;
