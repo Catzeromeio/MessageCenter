@@ -5,14 +5,7 @@ using UnityEngine;
 
 namespace CZM
 {
-    public struct Message
-    {
-        public object Sender;
-        public object Receiver;
-        public object Data;
-    }
-
-    public delegate void MessageDelegate(Message mes);
+    public delegate void MessageDelegate(object messageData);
     public class MessageCenter
     {
         static Dictionary<int, Dictionary<string, MessageDelegate>> TargtsEventsAndHandlers =
@@ -124,12 +117,12 @@ namespace CZM
             if (!eventAndHandlers.ContainsKey(eventName))
                 return;
             else
-                eventAndHandlers[eventName]((Message)data);
+                eventAndHandlers[eventName](data);
 
             if (!MonitorAllEvents.ContainsKey(eventName))
                 return;
             else
-                MonitorAllEvents[eventName]((Message)data);
+                MonitorAllEvents[eventName](data);
 
         }
         
@@ -138,7 +131,7 @@ namespace CZM
             if (!UnownedEventsAndHandlers.ContainsKey(eventName))
                 return;
             else
-                UnownedEventsAndHandlers[eventName]((Message)data);
+                UnownedEventsAndHandlers[eventName](data);
         }
 
         public static void Update()
